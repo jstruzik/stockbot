@@ -1,0 +1,22 @@
+{
+  "name": "stockbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bot.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jstruzik/stockbot.git"
+  },
+  "author": "jstruzik",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jstruzik/stockbot/issues"
+  },
+  "homepage": "https://github.com/jstruzik/stockbot#readme",
+  "dependencies": {
+    "slack-client": "^1.4.1"
+  }
+}
