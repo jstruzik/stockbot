@@ -1,6 +1,6 @@
 Slack = require 'slack-client'
 
-slackToken = '' # Add a bot at https://my.slack.com/services/new/bot and copy the token here.
+slackToken = process.env['SLACK_TOKEN'] # Add a bot at https://my.slack.com/services/new/bot and copy the token here.
 autoReconnect = true # Automatically reconnect after an error response from Slack.
 autoMark = true # Automatically mark each message as read after it is processed.
 
@@ -45,8 +45,7 @@ slack.on 'message', (message) ->
   # Respond to messages with the reverse of the text received.
   if type is 'message' and text? and channel?
     response = process_message_text text
-    response = text.split('').reverse().join('')
-    channel.send response
+    #channel.send response
     console.log """
       @#{slack.self.name} responded with "#{response}"
     """
@@ -72,6 +71,12 @@ process_message_text = (text) ->
    \sshares\sof\s        #"shares of"
    (\$\w+)               #the $STOCK
    ///i                  #ignore case
+
+  [action, shares, stock] = text.match action_pattern
+
+  console.log """
+    I've #{action} #{shares} into #{stock} 
+  """
 
 slack.on 'error', (error) ->
   console.error "Error: #{error}"
