@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jstruzik/stockbot#readme",
   "dependencies": {
+    "pg": "4.4.3",
     "slack-client": "^1.4.1"
   }
 }
