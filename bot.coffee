@@ -1,10 +1,25 @@
 Slack = require 'slack-client'
+pg = require 'pg'
+fs = require 'fs'
+
+data = fs.readFileSync './config/database.json'
+db_config = JSON.parse(data)
+
+env = if process.env['NODE_ENV'] then process.env['NODE_ENV'] else db_config.defaultEnv
+pg_user = if process.env['PG_USER'] then process.env['PG_USER'] else db_config[env].user
+pg_pwd = if process.env['PG_PWD'] then process.env['PG_PWD'] else db_config[env].password
+host = if process.env['DATABASE_URL'] then process.env['DATABASE_URL'] else db_config[env].host
+db = db_config[env].database
+connectionString = "tcp://" + pg_user + ":" + pg_pwd + "@" + host + "/" + db
 
 slackToken = process.env['SLACK_TOKEN'] # Add a bot at https://my.slack.com/services/new/bot and copy the token here.
 autoReconnect = true # Automatically reconnect after an error response from Slack.
 autoMark = true # Automatically mark each message as read after it is processed.
 
 slack = new Slack(slackToken, autoReconnect, autoMark)
+
+pg.connect connectionString, (err, pgClient) ->
+  return console.log "Error! #{err}" if err?
 
 slack.on 'open', ->
   channels = []
@@ -72,7 +87,7 @@ process_message_text = (text) ->
    (\$\w+)               #the $STOCK
    ///i                  #ignore case
 
-  [action, shares, stock] = text.match action_pattern
+  [_, action, shares, stock] = text.match action_pattern
 
   console.log """
     I've #{action} #{shares} into #{stock} 
@@ -82,4 +97,4 @@ slack.on 'error', (error) ->
   console.error "Error: #{error}"
 
 
-slack.login()
+#slack.login()
