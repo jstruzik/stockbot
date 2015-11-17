@@ -1,0 +1,17 @@
+{
+  "defaultEnv": {"ENV": "NODE_ENV"},
+  "dev": {
+    "driver": "pg",
+    "user": {"ENV": "PG_USER"},
+    "password": {"ENV": "PG_PWD"},
+    "host": "localhost",
+    "database": "stockbot"
+  },
+  "heroku": {
+    "driver": "pg",
+    "user": {"ENV": "PG_USER"},
+    "password": {"ENV": "PG_PWD"},
+    "host": {"ENV": "DATABASE_URL"},
+    "database": "stockbot"
+  }
+}
